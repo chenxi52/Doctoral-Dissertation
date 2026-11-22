@@ -1,0 +1,82 @@
+---
+description: 英文术语缩写首次出现时必须给出全称（"全称（缩写）"格式），后续可单独使用缩写。
+globs:
+  - body/**/*.tex
+  - back/**/*.tex
+  - front/**/*.tex
+  - thesis.tex
+alwaysApply: true
+---
+
+# 硬性规则：缩写首次出现必须给出全称
+
+适用范围：`body/`、`back/`、`front/`、`thesis.tex` 等所有正本 `.tex` 文件。
+
+## 绝对禁止
+
+英文术语**首次出现**时，**禁止**只给出缩写而不给出全称展开。违例反模式：
+
+- ❌ "UPA 通过邻居分布估计样本不确定性……"（首次出现 UPA 未展开）
+- ❌ "本章在 SFDA 设定下展开研究……"（首次出现 SFDA 未展开）
+- ❌ "DA 与 SFDA 的核心区别在于……"（DA, SFDA 首次出现均未展开）
+- ❌ "Mamba 通过选择性扫描机制……"（首次出现 Mamba 未展开）
+
+判断标准：在某个缩写首次出现的段落之前，**必须**有一次 `"全称（缩写）"` 形式的展开（中文在前 + 英文括号 + 英文逗号 + 缩写）。
+
+## 推荐展开形式
+
+首次出现术语时，按以下格式展开（与现有 `body/chap2.tex` 一致）：
+
+| 形式 | 示例 |
+|---|---|
+| **标准（推荐）** | 无源域适应（Source-Free Domain Adaptation, SFDA） |
+| 中文长 + 英文缩写 | 视觉—语言模型（Vision-Language Model, VLM） |
+| 短术语 | 状态空间模型（State-Space Model, SSM） |
+
+**全文只展开一次**——同一缩写后续可直接使用缩写，无需重复展开。
+
+## 不适用（允许不展开）
+
+| 术语类别 | 是否展开 | 示例 |
+|---|---|---|
+| **大众通用缩写** | 可不展开 | CNN, GPU, PDF, URL, ML, AI, ReLU, RGB |
+| **数学符号** | 不展开 | $\mathcal{D}$, $\theta$, $L$, $H$, $G$ |
+| **章节标题** | 不展开 | `\section{SfMamba}`、`\caption{}` 等结构化标题 |
+| **项目自定义方法名** | **必须展开** | UPA, SfMamba, DAMF, CMPF, AER-Bench |
+| **论文核心术语缩写** | **必须展开** | SFDA, SFUDA, UDA, DA, OVA, OOD, Mamba, CLIP, SAM, ViL, IM, APS, CACL, SCS, MHPL, DAMF, DFSelector, APT, ADL |
+| **数学/统计学术语** | 首次必须展开 | Lipschitz constant $k$, Rademacher Complexity $\mathcal{R}_n$ |
+
+## 触发告警的情况
+
+- 缩写首次出现但找不到对应的 `"全称（缩写）"` 展开 → ❌ 违例
+- 同章多处使用缩写但前文未展开 → ❌ 违例
+- 全称展开缺逗号或括号（如 `（Source-Free Domain Adaptation SFDA）`）→ ⚠️ 格式需修正
+- 全称中含中文逗号（`（Source-Free Domain Adaptation，SFDA）`）→ ⚠️ 改为英文逗号
+
+## 适用范围之外的提示
+
+- `papers/**/*.tex` 由 `papers-readonly.mdc` 约束，本规则不涉及。
+- bib key 引用（`\cite{}`）不受本规则限制。
+- 公式中的 `\mathbf{}` 属数学排版，不受本规则限制。
+- `\section`/`\subsection`/`\caption` 等结构化标题本身不受本规则限制（标题中的缩写视为术语引用，不展开）。
+
+## 误操作恢复
+
+如果发现正文有违例：
+
+1. 立即停下后续写入。
+2. 在该缩写的**第一次**使用处补上"全称（缩写）"展开。
+3. 汇报时说明本次补全的缩写数量和位置。
+4. 重新跑 `grep` 核验：每个缩写至少有一处展开形式。
+
+## 扫描 one-liner（每章收尾跑一次）
+
+```bash
+# 提取每个缩写是否有"全称（缩写）"展开
+for abbrev in SFDA SFUDA UDA DA UPA SfMamba DAMF CMPF Mamba CLIP SAM ViL IM APS CACL SCS MHPL DFSelector APT ADL; do
+  cnt=$(grep -cE "[A-Za-z][A-Za-z\- ]+（${abbrev}）|（${abbrev}）" body/chap*.tex back/*.tex 2>/dev/null | awk -F: '{s+=$2} END{print s}')
+  echo "$abbrev: $cnt 处展开"
+done
+```
+
+任何一个缩写 0 处展开 → 必须补全。

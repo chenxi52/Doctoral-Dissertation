@@ -1,0 +1,18 @@
+\begin{table}[!htbp]\centering
+    \bicaption[tab:ablation_cmpf]{}{CMPF各模块消融结果}{Table}{Ablation of CMPF components}
+    \vspace{0.5em}\centering\wuhao
+    \setlength{\tabcolsep}{2pt}
+    \begin{tabular}{cccccccc}
+        \toprule
+        &\multirow{2}{*}{Query Injector} & \multirow{2}{*}{Feature Injector} & \multirow{2}{*}{OpenSeg Ensemble} & \multicolumn{3}{c}{Semantic} & Panoptic \\
+        \cline{5-8}
+        & &       &       & PC-459 & A-847 & A-150 & A-150 (PQ) \\
+        \midrule
+        Model 1&$\times$ & $\times$ & $\times$ & 17.3 & 14.0 & 32.8 & 25.1 \\
+        Model 2&$\times$ & $\times$ & \checkmark & 17.6 & 14.5 & 33.5 & -- \\
+        Model 3&$\checkmark$ & $\times$ & $\times$ & 18.1 & 14.2 & 33.6 & 25.7 \\
+        Model 4&$\checkmark$ & $\checkmark$ & $\times$ & 18.5 & 14.4 & 33.8 & 25.9 \\
+        CMPF   & $\checkmark$& $\checkmark$ & $\checkmark$ & \textbf{19.7} & \textbf{14.8} & \textbf{34.4} & -- \\
+        \bottomrule
+    \end{tabular}
+\end{table}

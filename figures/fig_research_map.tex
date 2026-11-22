@@ -1,0 +1,164 @@
+% 图 1.1：视觉基础模型驱动的开放视觉感知——研究主线图
+% 风格与 figures/frame.png 保持一致（"分支框 + 主干推进"），不依赖 papers/。
+% 5 个章节分支框沿主干排列，每格填实内容；用彩色箭头串成主线。
+
+\begin{tikzpicture}[
+    x=0.92cm, y=0.92cm,
+    every node/.style={font=\small},
+    mainbox/.style={rectangle, draw, very thick, rounded corners=3pt,
+                    minimum width=2.7cm, minimum height=2.4cm, align=left,
+                    inner sep=5pt, fill=white},
+    chA/.style={mainbox, draw=blue!70!black, fill=blue!8},
+    chB/.style={mainbox, draw=teal!70!black, fill=teal!10},
+    chC/.style={mainbox, draw=green!60!black, fill=green!8},
+    chD/.style={mainbox, draw=orange!80!black, fill=orange!10},
+    startbox/.style={rectangle, draw, thick, rounded corners=3pt,
+                     minimum width=2.2cm, minimum height=2.0cm, align=center,
+                     inner sep=5pt, fill=gray!10, draw=gray!50!black},
+    goalbox/.style={rectangle, draw, very thick, rounded corners=3pt,
+                    minimum width=2.6cm, minimum height=2.0cm, align=center,
+                    inner sep=5pt, fill=red!10, draw=red!60!black},
+    mainarrow/.style={->, >=Stealth, very thick, draw=red!60!black},
+    phasearrow/.style={->, >=Stealth, thick, draw=gray!60!black},
+    phaselbl/.style={font=\footnotesize\itshape, fill=white, inner sep=2pt},
+    axisnote/.style={font=\footnotesize, align=center, color=gray!50!black},
+    banner/.style={font=\small\bfseries, align=center, color=red!60!black}
+]
+
+% ---------- 主标题（研究主线）----------
+\node[banner] at (10.0, 7.4)
+    {研究主线：从骨干演进 $\rightarrow$ 多模态融合 $\rightarrow$ 开放语义评测};
+\node[axisnote] at (10.0, 6.95)
+    {(沿开放性维度递增 + 基础模型能力递增的双轴推进)};
+
+% ---------- 起点框：问题 ----------
+\node[startbox] at (1.4, 4.4) {
+    \textbf{研究问题}\\[2pt]
+    \footnotesize 在数据受限 / 类别\\
+    受限 / 语义受限三类\\
+    开放性约束下，如何借\\
+    助视觉基础模型系统\\
+    性地提升视觉感知？
+};
+
+% ---------- 终点框：目标 ----------
+\node[goalbox] at (18.6, 4.4) {
+    \textbf{研究目标}\\[2pt]
+    \footnotesize 面向开放场景的\\
+    视觉基础感知—融合—\\
+    评测一体化方法体系\\
+    (精度 / 效率 /\\
+    可解释性)
+};
+
+% ========== 5 个章节分支框 ==========
+
+% --- Ch2 UPA：域开放 + CNN 骨干 ---
+\node[chA] at (5.0, 4.4) {
+    \textbf{第二章 UPA}\\[2pt]
+    \footnotesize\itshape 域开放 / CNN 骨干\\[1pt]
+    \scriptsize 核心问题：\\
+    \scriptsize 伪标签噪声难抑制\\
+    \scriptsize （额外模型敏感）\\
+    \scriptsize 关键模块：\\
+    \scriptsize $\bullet$ APS：邻居投票\\
+    \scriptsize $\bullet$ CACL：类感知对比\\
+    \scriptsize 对应成果：\\
+    \scriptsize ICANN 2024 / arXiv
+};
+
+% --- Ch3 SfMamba：域开放 + Mamba 骨干 ---
+\node[chB] at (8.6, 4.4) {
+    \textbf{第三章 SfMamba}\\[2pt]
+    \footnotesize\itshape 域开放 / Mamba 骨干\\[1pt]
+    \scriptsize 核心问题：\\
+    \scriptsize CNN 局部 vs ViT $O(n^2)$\\
+    \scriptsize 两难\\
+    \scriptsize 关键模块：\\
+    \scriptsize $\bullet$ Ch-VSS：通道扫描\\
+    \scriptsize $\bullet$ SCS：背景打乱\\
+    \scriptsize 对应成果：\\
+    \scriptsize ESWA 2025
+};
+
+% --- Ch4 DAM/DAMF：域开放 + CLIP ---
+\node[chB] at (12.2, 4.4) {
+    \textbf{第四章 DAM/DAMF}\\[2pt]
+    \footnotesize\itshape 域开放+标签稀疏 / CLIP\\[1pt]
+    \scriptsize 核心问题：\\
+    \scriptsize ViL 先验与人工标注\\
+    \scriptsize 浅层融合\\
+    \scriptsize 关键模块：\\
+    \scriptsize $\bullet$ DFSelector：双聚焦\\
+    \scriptsize $\bullet$ APT + ADL：双向蒸馏\\
+    \scriptsize 对应成果：\\
+    \scriptsize ICASSP 2025 + arXiv
+};
+
+% --- Ch5 CMPF：词汇开放 + SAM+CLIP ---
+\node[chC] at (15.8, 4.4) {
+    \textbf{第五章 CMPF}\\[2pt]
+    \footnotesize\itshape 词汇开放 / SAM+CLIP\\[1pt]
+    \scriptsize 核心问题：\\
+    \scriptsize SAM 与 CLIP 两阶段\\
+    \scriptsize 流程特征不对齐\\
+    \scriptsize 关键模块：\\
+    \scriptsize $\bullet$ Query Injector\\
+    \scriptsize $\bullet$ Feature Injector\\
+    \scriptsize $\bullet$ OpenSeg Ensemble\\
+    \scriptsize 对应成果：\\
+    \scriptsize NeurIPS 2025 投稿
+};
+
+% --- Ch6 AER-Bench：语义开放 + MLLM ---
+\node[chD] at (19.4, 0.6) {
+    \textbf{第六章 AER-Bench}\\[2pt]
+    \footnotesize\itshape 语义开放 / MLLM 评测\\[1pt]
+    \scriptsize 核心问题：\\
+    \scriptsize 通用评测难以诊断\\
+    \scriptsize 高阶情感推理缺口\\
+    \scriptsize 四层结构：\\
+    \scriptsize $\bullet$ 感知维度\\
+    \scriptsize $\bullet$ 情感 \& VAD\\
+    \scriptsize $\bullet$ 推理（基于证据）\\
+    \scriptsize $\bullet$ 描述（rubric）\\
+    \scriptsize 对应成果：\\
+    \scriptsize IEEE TAC 在投
+};
+
+% ========== 主干箭头：起点 → 5 格 → 终点 ==========
+% 上层：起点 → Ch2 → Ch3 → Ch4 → Ch5 → 终点
+\draw[mainarrow] (2.5, 4.4) -- (3.7, 4.4);   % 起点 → UPA
+\draw[mainarrow] (6.3, 4.4) -- (6.9, 4.4);   % UPA → SfMamba
+\draw[mainarrow] (9.9, 4.4) -- (10.5, 4.4); % SfMamba → DAM
+\draw[mainarrow] (13.5, 4.4) -- (14.2, 4.4); % DAM → CMPF
+\draw[mainarrow] (17.1, 4.4) -- (17.6, 4.4); % CMPF → 终点
+
+% 下层：Ch5 → Ch6（开放性跃迁到语义层）
+\draw[mainarrow, dashed] (15.8, 3.2) -- (15.8, 1.6);
+\draw[mainarrow, dashed] (17.4, 0.6) -- (18.0, 0.6);
+\draw[mainarrow] (17.8, 0.6) -- (18.4, 0.6); % Ch6 → 终点
+
+% 阶段标注
+\node[phaselbl] at (4.3, 4.7)  {骨干演进};
+\node[phaselbl] at (7.9, 4.7)  {效率—精度统一};
+\node[phaselbl] at (11.5, 4.7) {多模态协同};
+\node[phaselbl] at (15.0, 4.7) {跨模型融合};
+\node[phaselbl] at (16.8, 2.0) {能力跃迁};
+
+% ---------- 主线要点（下方叙述带）----------
+\node[draw, rounded corners=3pt, fill=yellow!10, draw=yellow!50!black,
+      align=left, inner sep=4pt, font=\footnotesize] at (10.0, 0.6) {
+    \textbf{主线要点：}\\
+    $\bullet$ \textbf{骨干演进轴}（Ch2$\to$Ch3）：从 CNN 局部感受野到 Mamba 线性全局建模，解决精度—效率两难。\\
+    $\bullet$ \textbf{多模态融合轴}（Ch4$\to$Ch5）：从 CLIP 单一语义锚到 SAM+CLIP 双锚，解决浅层融合与开放词汇泛化。\\
+    $\bullet$ \textbf{开放语义评测轴}（Ch6）：当任务升级到高层情感推理，构建四层级诊断基准，反哺基础模型迭代。
+};
+
+% ---------- 轴标签 ----------
+\node[rotate=90, anchor=south, font=\small\bfseries] at (0.6, 4.4)
+    {问题};
+\node[rotate=90, anchor=south, font=\small\bfseries] at (22.4, 4.4)
+    {目标};
+
+\end{tikzpicture}

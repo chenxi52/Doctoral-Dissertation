@@ -1,0 +1,21 @@
+\begin{table*}[!htbp]\centering
+    \bicaption[tab:instance_cmpf]{}{LVIS v1.0数据集rare类别开放词汇实例分割结果对比}{Table}{Open-vocabulary instance segmentation on LVIS rare}
+    \setlength{\tabcolsep}{2pt}
+    \vspace{0.5em}\centering\wuhao
+    % \resizebox{.8\textwidth}{!}{%
+    \begin{tabular}{lcccc}
+        \toprule
+        方法 & ViL Model & 训练数据 & 外部提议 & $\text{AP}_r$ \\
+        \midrule
+        & ViT-B/16 & O365 & GLIP-T(B) & 12.7 \\
+        RegionSpot~\cite{yang2024recognize} & ViT-L/14 & O365, OI, V3D & SAM-B & 14.3 \\
+        & ViT-B/16 & O365, OI, V3D & GLIP-T & 20.0 \\
+        \midrule
+        Open-Vocabulary SAM~\cite{yuan2024open} & RN50$\times$16 & SAM-1B+LVIS$^\ddag$ & Detic & 24.0 \\
+        \midrule
+        FC-CLIP~\cite{yu2023convolutions} & ConvNeXt-L & COCO Panoptic & -- & 25.0 \\
+        \textbf{CMPF} & ConvNeXt-L & COCO Panoptic & -- & \textbf{25.6} \\
+        \bottomrule
+    \end{tabular}
+    % }
+\end{table*}

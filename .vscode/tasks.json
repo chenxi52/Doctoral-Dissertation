@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "_comment": "Run latexmk on ⌘S for the LaTeX thesis project.",
+  "tasks": [
+    {
+      "label": "build-thesis",
+      "type": "shell",
+      "command": "latexmk",
+      "args": [
+        "-xelatex",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "thesis.tex"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "max_print_line": "1000"
+        }
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "problemMatcher": ["$latex"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Build thesis with latexmk (xelatex)"
+    }
+  ]
+}

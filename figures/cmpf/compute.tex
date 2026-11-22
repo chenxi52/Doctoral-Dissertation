@@ -1,0 +1,19 @@
+\begin{table*}[!htbp]\centering
+    \bicaption[tab:speed_cmpf]{}{CMPF与FC-CLIP的推理速度与参数量对比（单卡A100）}{Table}{Inference speed and parameter analysis}
+    \vspace{0.5em}\centering\wuhao
+    % \setlength{\tabcolsep}{2pt}
+    % \resizebox{.5\textwidth}{!}{
+        \begin{tabular}{lcccccc}
+            \toprule
+            \multirow{2}{*}{方法} & \multicolumn{2}{c}{ADE20K} & \multicolumn{2}{c}{A-847} & \multicolumn{2}{c}{参数 (M)} \\
+            \cline{2-7}
+             & PQ & FPS & PQ & FPS & 冻结 & 可训练 \\
+            \midrule
+            FC-CLIP~\cite{yu2023convolutions} & 25.1 & 2.7 & 14.0 & 3.1 & 200.0 & 21.0 \\
+            SCAN~\cite{liu2024open} & -- & -- & 14.0 & 0.9 & 731.6 & 158.7 \\
+            EOV-Seg~\cite{niu2025eov} & 24.5 & 11.6 & 12.8 & 11.8 & 203.7 & 21.8 \\
+            \textbf{CMPF} & \textbf{25.9} & 2.2 & \textbf{14.4} & 2.9 & 293.5 & 26.5 \\
+            \bottomrule
+        \end{tabular}
+        % }
+\end{table*}

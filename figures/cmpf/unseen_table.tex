@@ -1,0 +1,17 @@
+\begin{table*}[!htbp]\centering
+    \bicaption[tab:unseen_cmpf]{}{开放词汇语义分割可见/未见类别mIoU对比（\%）}{Table}{mIoU on seen/unseen classes}
+    \vspace{0.5em}\centering\wuhao
+    \setlength{\tabcolsep}{2pt}
+    \resizebox{.8\textwidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \toprule
+        \multirow{2}{*}{方法} & \multicolumn{2}{c}{PC-459} & \multicolumn{2}{c}{A-847} & \multicolumn{2}{c}{A-150} \\
+        \cline{2-7}
+         & $\text{mIoU}_{seen}$ & $\text{mIoU}_{unseen}$ & $\text{mIoU}_{seen}$ & $\text{mIoU}_{unseen}$ & $\text{mIoU}_{seen}$ & $\text{mIoU}_{unseen}$ \\
+        \midrule
+        MaskCLIP~\cite{ding2023open}  & 30.3 & 6.3 & 16.7 & 6.0 & 32.7 & 16.5 \\
+        FC-CLIP~\cite{yu2023convolutions} & 46.0 & 8.7 & 34.0 & 11.3 & 47.3 & 22.0 \\
+        \textbf{CMPF}                & \textbf{48.1} & \textbf{11.2} & \textbf{34.7} & \textbf{12.1} & \textbf{49.0} & \textbf{23.6} \\
+        \bottomrule
+    \end{tabular}}
+\end{table*}

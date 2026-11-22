@@ -1,0 +1,19 @@
+\begin{table}[!htbp]\centering
+    \bicaption[tab:sam_cmpf]{}{不同SAM骨干规模对CMPF性能的影响}{Table}{Effect of SAM backbone size}
+    \vspace{0.5em}\centering\wuhao
+    % \setlength{\tabcolsep}{2pt}
+    % \resizebox{.5\textwidth}{!}{
+    \begin{tabular}{lcccccc}
+        \toprule
+        \multirow{2}{*}{SAM} & \multicolumn{3}{c}{Cityscapes} & \multicolumn{3}{c}{Semantic} \\
+        \cline{2-7}
+         & PQ & AP & mIoU & PC-459 & A-847 & PC-59 \\
+        \midrule
+        ViT-T & 43.0 & 25.9 & 55.0 & 17.6 & 14.0 & 56.8 \\
+        \textbf{ViT-B} & \textbf{45.8} & \textbf{28.4} & \textbf{56.8} & \textbf{18.5} & \textbf{14.4} & \textbf{58.1} \\
+        ViT-L & 44.2 & 27.1 & 56.2 & 17.4 & 14.2 & 56.7 \\
+        ViT-H & 44.2 & 28.0 & 56.2 & 17.3 & 13.9 & 56.6 \\
+        \bottomrule
+\end{tabular}
+% }
+\end{table}

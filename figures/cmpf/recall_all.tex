@@ -1,0 +1,16 @@
+\begin{table*}[!htbp]
+    \bicaption[tab:recall_cmpf]{}{开放词汇语义分割掩码召回率}{Table}{Open-vocabulary semantic mask recall }
+    \vspace{0.5em}\centering\wuhao
+    \setlength{\tabcolsep}{1pt}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{lccccccccc}
+        \toprule
+        \multirow{2}{*}{方法} & \multicolumn{3}{c}{PC-459 (S/U)} & \multicolumn{3}{c}{A-847 (S/U)} & \multicolumn{3}{c}{A-150 (S/U)} \\
+        \cline{2-10}
+         & 0.5 & 0.75 & 0.9 & 0.5 & 0.75 & 0.9 & 0.5 & 0.75 & 0.9 \\
+        \midrule
+        FC-CLIP & 91.4/77.7 & 73.6/56.2 & 43.9/28.4 & \textbf{84.6}/66.6 & \textbf{60.0}/41.3 & \textbf{27.6}/14.3 & 83.7/72.0 & 58.9/45.5 & \textbf{27.7}/17.4 \\
+        \textbf{CMPF} & \textbf{92.6/81.0} & \textbf{76.0/59.9} & \textbf{47.0/31.4} & 78.9/\textbf{82.9} & 52.3/\textbf{59.4} & 23.6/\textbf{24.6} & \textbf{84.7}/\textbf{73.2} & \textbf{60.1}/\textbf{47.2} & 27.6/\textbf{18.0} \\
+        \bottomrule
+    \end{tabular}}
+\end{table*}

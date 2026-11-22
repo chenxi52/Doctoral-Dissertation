@@ -1,0 +1,91 @@
+% -*-coding: utf-8 -*-*
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 附录 B：章节计数器承接附录 A，不重复 \appendix（否则计数器被重置回 0）
+\chapter{AER-Bench 标注协议}[Details of annotation and reliability for AER-Bench]
+\label{app:aerbench_supplement}
+本附录给出第 5 章 AER-Bench 的GPT-4o标注对象划分、字段级模式与取值约束的完整定义，以及标注的人工核验细节。
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \section{LLM 评判的可靠性核验}
+% \label{app:llm_judge_validation}
+
+% 本节验证大语言模型评判能否作为专家评分细则评判的可扩展代理。评测过程中抽取 360 条模型响应，单图推理、配图推理与情感描述三类任务各 120 条。三位具有视觉艺术、艺术史与多模态评测背景的专家，使用与模型评判完全相同的 0--2 评分细则对每条响应打分。为保证同一基准下的可比性，专家与模型评判仅接收同一份纯文本评测包，即任务提示、候选响应与参考答案，且对来源模型与评判分数保持盲态。
+
+% 核验结果给出在正文表~\ref{tab:chap6_llm_judge}中，本节说明其读法。模型评判与专家中位分数之间的二次加权 Cohen's $\kappa_w$ 达到 0.60；在同一批响应上重复评判五次，得到整体自我一致性 $\alpha=0.86$。单图推理、配图推理与情感描述三类任务上的模型--人类 $\kappa_w$ 序列依次为 0.69、0.58、0.53，与标注平均得分序列 0.89、0.77、0.72 单调平行，说明评判在任务之间的方差差异反映的是各任务固有的判别难度，而非评判者的偶发偏好。据此可以认为模型评判在语义正确性、相关性、推理质量与关键证据覆盖四个维度上足以替代人工专家承担开放式题的常规评判。
+
+% \section{标注细节}
+\label{app:annotation_protocol}
+
+% \subsection{标注协议与结构化输出模式}
+
+\paragraph{标注规则}
+AER-Bench 的全部标注对象遵循以下规则。
+\begin{itemize}
+    \item 针对给定的 \texttt{image\_id} 返回且仅返回一个符合模式的对象，其中须包含五个感知字段（$\mathcal{O}_{\text{per}}$）、情感归因（$\mathcal{O}_{\text{emo}}$）、推理字段（$\mathcal{O}_{\text{rea}}$）与描述字段（$\mathcal{O}_{\text{des}}$），不允许出现额外字段；
+    \item $\mathcal{O}_{\text{des}}$ 与 $\mathcal{O}_{\text{rea}}$ 中的每一项关键论断都必须落到具体视觉证据上，证据可以是物体、姿态或手势、光线方向、色彩对比、笔触或肌理以及空间层次，不允许出现缺乏图像锚点的抽象论断；
+    \item 标注不得虚构作品的元信息。
+\end{itemize}
+
+% \paragraph{输出对象与允许取值}
+输出模式与 AER-Bench 的四级基准层级一一对应。表~\ref{tab:app_annotation_objects} 先给出每个顶层标注对象在基准层级中的语义角色，表~\ref{tab:app_annotation_schema} 随后给出完整的字段级模式，涵盖允许取值与生成约束。
+
+\begin{table}[!htbp]
+    \centering
+    \bicaption[tab:app_annotation_objects]{}{顶层标注对象及其在基准层级中的角色}{Table}{Top-level annotation objects and their roles in the benchmark taxonomy}
+    \vspace{0.4em}\wuhao
+    \setlength{\tabcolsep}{5pt}
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabularx}{\textwidth}{@{}p{0.08\textwidth}p{0.24\textwidth}X@{}}
+    \toprule
+    对象 & 基准角色 & 必需内容 \\
+    \midrule
+    $\mathcal{O}_{\text{per}}$ & 情感线索感知 & 五个视觉--情感维度，即视觉张力、动态性、空间开放性、材质印象与光照时间性 \\
+    $\mathcal{O}_{\text{emo}}$ & 情感归因 & 排序后的 Top-3 情感预测，以及效价--唤醒度--支配度（VAD）评分 \\
+    $\mathcal{O}_{\text{rea}}$ & 解释性推理 & 由感知线索到情感的映射、语境解释、情感歧义分析与表达模式分析 \\
+    $\mathcal{O}_{\text{des}}$ & 情感描述 & 对作品整体情感氛围的、忠实且有证据支撑的自然语言综合 \\
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+\begin{table}[!htbp]
+    \centering
+    \bicaption[tab:app_annotation_schema]{}{完整的字段级标注模式与生成约束}{Table}{Complete field-level annotation schema and generation constraints}
+    \vspace{0.4em}\zihao{-5}
+    \setlength{\tabcolsep}{5pt}
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabularx}{\textwidth}{@{}p{0.16\textwidth}p{0.34\textwidth}X@{}}
+    \toprule
+    基准组成 & 允许取值或长度约束 & 标注规则 \\
+    \midrule
+    \multicolumn{3}{@{}l}{\itshape \textbf{情感线索感知（$\mathcal{O}_{\text{per}}$）}} \\
+    视觉张力 & \{低, 中, 高\} & 构图张力、对比、拥挤或视觉应力的程度 \\
+    动态性 & \{静止, 中等, 动态\} & 隐含的或被描绘的运动程度 \\
+    空间开放性 & \{封闭, 均衡, 开放\} & 构图在观感上封闭、均衡或向外延展的程度 \\
+    材质印象 & \{冷调技术, 中性, 温暖自然\} & 材质与类温度的主导印象 \\
+    光照时间性 & \{静态, 轻微变化, 强周期\} & 光照在感知上的时间变化或周期性 \\
+    \midrule
+    \multicolumn{3}{@{}l}{\itshape \textbf{情感归因（$\mathcal{O}_{\text{emo}}$）}} \\
+    情感排序 & \{兴奋, 激动, 快乐, 悲伤, 无聊, 疲惫, 惊恐, 恼怒, 沮丧, 高兴, 满足, 平静\} & 从共享的 12 词情感词表中选取恰好三个并排序 \\
+    VAD & 效价、唤醒度、支配度 $\in\{1,2,3,4,5\}$ & 三个维度得分须与感知标注及情感标注保持一致 \\
+    \midrule
+    \multicolumn{3}{@{}l}{\itshape \textbf{解释性推理（$\mathcal{O}_{\text{rea}}$）}} \\
+    情感映射 & 1--3 条陈述，每条不少于 140 个字符 & 说明一到两个感知维度如何支撑情感归因，须给出具体视觉证据 \\
+    语境解释 & \{历史, 文化, 宗教, 政治, 象征, 无\}；适用时说明不少于 120 个字符 & 说明所选语境如何改变对作品情感的解释 \\
+    情感歧义 & \{多实体, 主体--背景, 形式--内容, 模糊, 无\}；适用时说明不少于 120 个字符 & 说明相互竞争的情感线索，并为双方的判断各给出视觉证据 \\
+    表达模式 & \{直接, 间接, 混合, 无\}；适用时说明不少于 120 个字符 & 说明情感是通过直接、间接还是混合策略传达的 \\
+    \midrule
+    \multicolumn{3}{@{}l}{\itshape \textbf{情感描述（$\mathcal{O}_{\text{des}}$）}} \\
+    情感描述与综合 & 一段不少于 480 个字符的描述 & 通过具体形式、物体、手势、光线、色彩、构图或肌理综合作品的情感氛围，不允许出现无证据支撑的纯情绪化表述 \\
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+作为补充，$\mathcal{O}_{\text{emo}}$ 对象中的三个情感标签按最显著到第三显著排序。VAD 的锚点固定如下：效价从强负向（1）到强正向（5），3 表示中性或混合情感；唤醒度从非常平静或低激活（1）到高度激活或强烈（5），3 表示中等激活；支配度从非常无力或被支配（1）到强烈掌控（5），3 表示控制程度处于平衡水平。
+
+$\mathcal{O}_{\text{rea}}$ 对象实例化的是正文定义的四种推理类型，不引入额外的推理类别。特别地，对情感映射而言，每一条都包含一段自然语言陈述与一份 $\mathcal{O}_{\text{per}}$ 引用列表，后者指向一到两个感知字段；该陈述不少于 140 个字符，且必须引用具体视觉证据。对三种可选推理类型，取值为无表示该类型不适用于该作品。
+
+\paragraph{人工核验}
+\label{app:human_verification}
+
+三位专家标注员对分层随机抽取的 360 个实例独立审计，三类任务各 120 个实例。该审计是随机样本上的只读质量审计，而非第二轮标注。对每个实例，标注员沿一致性维度给出 0--2 的序数评分，其中 0 表示存在明显问题，1 表示存在轻微问题，2 表示可接受。一致性指已发布的推理、描述与标注是否在可见作品上彼此吻合，并锚定于上游的感知维度与情感及 VAD 维度。
+% 审计结果给出在正文表~\ref{tab:chap6_llm_judge}的标注核验部分。

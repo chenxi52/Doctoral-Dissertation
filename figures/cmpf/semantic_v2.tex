@@ -1,0 +1,30 @@
+\begin{table*}[!htbp]\centering
+    \bicaption[tab:semantic_cmpf]{}{开放词汇语义分割结果对比}{Table}{Open-vocabulary semantic segmentation results}
+    % \setlength{\tabcolsep}{2pt}
+    \vspace{0.5em}\centering\wuhao
+    % \resizebox{.6\textwidth}{!}{
+    \begin{tabular}{llcccc}
+        \toprule
+        方法 & ViL Model & PC-459 & PC-59 & A-847 & A-150 \\
+        \midrule
+        ZegFormer~\cite{ding2022decoupling}    & ViT-B/16   & --    & --    & --    & 16.4 \\
+        SimBase~\cite{xu2022simple}            & ViT-B/16   & --    & 47.7  & 7.0   & 20.5 \\
+        OpenSeg~\cite{ghiasi2022scaling}       & ALIGN      & 11.2  & 45.9  & 6.8   & 24.8 \\
+        OPSNet~\cite{chen2023open}             & RN50       & --    & 54.3  & --    & 25.4 \\
+        \midrule
+        Ovseg~\cite{liang2023open}             & ViT-L/14   & 12.4  & 55.7  & 9.0   & 29.6 \\
+        MaskCLIP~\cite{ding2023open}           & ViT-L/14   & 10.0  & 45.9  & 8.2   & 23.7 \\
+        MasQCLIP~\cite{MasQCLIP}         & ViT-L/14   & 18.2  & 57.8  & 10.7  & 30.4 \\
+        ODISE~\cite{xu2023open}                & ViT-L/14   & 14.5  & 57.3  & 11.1  & 29.9 \\
+        SCAN~\cite{liu2024open}                & ViT-L/14   & 16.7  & 59.3  & 14.0  & 33.5 \\
+        \midrule
+        FC-CLIP~\cite{yu2023convolutions}      & RN50$\times$64 & 15.6 & 54.8 & 10.8 & 28.7 \\
+        \textbf{CMPF}                          & RN50$\times$64 & \textbf{18.7} & \textbf{57.5} & \textbf{11.8} & \textbf{30.7} \\
+        \midrule
+        FC-CLIP~\cite{yu2023convolutions}      & ConvNeXt-L & 17.3  & 56.6  & 14.0  & 32.8 \\
+        EOV-Seg~\cite{niu2025eov}              & ConvNeXt-L & 16.8  & 56.9  & 12.8  & 32.1 \\
+        \textbf{CMPF}                          & ConvNeXt-L & \textbf{19.7} & \textbf{58.4} & \textbf{14.8} & \textbf{34.4} \\
+        \bottomrule
+    \end{tabular}
+    % }
+\end{table*}

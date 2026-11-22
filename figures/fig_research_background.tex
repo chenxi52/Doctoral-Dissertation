@@ -1,0 +1,165 @@
+% 图 1.X：研究背景图——视觉基础模型驱动的开放视觉感知
+% 风格参考：漏斗式三层结构（问题 → 挑战 → 方案）
+% 简洁学术风格，不堆砌技术细节
+
+\begin{tikzpicture}[
+    x=1.0cm, y=1.0cm,
+    every node/.style={font=\small},
+    % 第一层：顶层标题
+    toptitle/.style={rectangle, draw=none, fill=none,
+                     font=\bfseries\small, align=center},
+    % 第二层：三类开放性约束
+    constraintbox/.style={rectangle, draw, very thick, rounded corners=4pt,
+                          minimum width=4.5cm, minimum height=2.8cm, align=left,
+                          inner sep=6pt, fill=white},
+    domain/.style={constraintbox, draw=blue!60!black, fill=blue!6},
+    category/.style={constraintbox, draw=green!50!black, fill=green!6},
+    semantic/.style={constraintbox, draw=orange!60!black, fill=orange!6},
+    % 缺陷标签
+    defectlabel/.style={rectangle, draw, thick, rounded corners=3pt,
+                        fill=yellow!20, draw=yellow!60!black,
+                        font=\footnotesize, align=center},
+    % 第三层：本文方案
+    methodbox/.style={rectangle, draw, very thick, rounded corners=4pt,
+                      minimum width=1.8cm, minimum height=1.5cm, align=center,
+                      inner sep=4pt, font=\footnotesize},
+    ch2/.style={methodbox, draw=blue!70!black, fill=blue!8},
+    ch3/.style={methodbox, draw=teal!60!black, fill=teal!8},
+    ch4/.style={methodbox, draw=green!60!black, fill=green!8},
+    ch5/.style={methodbox, draw=orange!70!black, fill=orange!8},
+    ch6/.style={methodbox, draw=red!60!black, fill=red!8},
+    % 第四层：目标
+    goalbox/.style={rectangle, draw, very thick, rounded corners=4pt,
+                    minimum width=8.0cm, minimum height=1.2cm, align=center,
+                    inner sep=6pt, fill=gray!8, draw=gray!50!black},
+    % 连线样式
+    topline/.style={->, >=Stealth, thick, draw=gray!60!black},
+    arrowdown/.style={->, >=Stealth, very thick, draw=red!50!black},
+    subarrow/.style={->, >=Stealth, thick, dashed, draw=gray!60!black},
+    % 标注
+    labellayer/.style={font=\small\bfseries, color=gray!40!black},
+    notebox/.style={rectangle, draw, dashed, thick, rounded corners=3pt,
+                    fill=yellow!15, draw=yellow!50!black,
+                    font=\footnotesize\itshape, align=center}
+]
+
+% ========== 第一层：顶层标题 ==========
+\node[toptitle] at (10.0, 11.5) {
+    \textbf{研究背景：视觉基础模型驱动的开放视觉感知}
+};
+
+% ========== 第二层：三类开放性约束 ==========
+
+% 左：域开放
+\node[domain] at (3.5, 8.5) {
+    \textbf{域开放}\\[3pt]
+    \footnotesize 训练与测试数据分布偏移\\[4pt]
+    \textbf{核心挑战：}\\[2pt]
+    \begin{itemize}\setlength\itemsep{1pt}
+        \item 伪标签噪声难以抑制
+        \item 局部建模与长程依赖两难
+    \end{itemize}
+};
+
+% 中：类别开放
+\node[category] at (10.0, 8.5) {
+    \textbf{类别开放}\\[3pt]
+    \footnotesize 训练类别与测试类别不对称\\[4pt]
+    \textbf{核心挑战：}\\[2pt]
+    \begin{itemize}\setlength\itemsep{1pt}
+        \item 单一语义锚泛化能力有限
+        \item 多模态知识浅层融合
+    \end{itemize}
+};
+
+% 右：语义开放
+\node[semantic] at (16.5, 8.5) {
+    \textbf{语义开放}\\[3pt]
+    \footnotesize 低层感知向高层认知推理延伸\\[4pt]
+    \textbf{核心挑战：}\\[2pt]
+    \begin{itemize}\setlength\itemsep{1pt}
+        \item 缺乏高阶情感推理能力
+        \item 评测粒度不足
+    \end{itemize}
+};
+
+% 三个约束下方的共同标注
+\node[defectlabel] at (10.0, 6.5) {
+    ◀ 现有方法在开放场景下存在泛化瓶颈 ▶
+};
+
+% ========== 第二层 → 第三层 连接箭头 ==========
+\draw[arrowdown] (3.5, 6.8) -- (3.5, 5.8);
+\draw[arrowdown] (10.0, 6.8) -- (10.0, 5.8);
+\draw[arrowdown] (16.5, 6.8) -- (16.5, 5.8);
+
+% ========== 第三层：本文方案 ==========
+
+% 本文方案总标题
+\node[labellayer] at (10.0, 5.5) {
+    \textbf{本文方案：开放视觉感知渐进式解决}
+};
+
+% Ch2
+\node[ch2] at (2.0, 4.0) {
+    \textbf{第二章}\\[3pt]
+    伪标签去噪\\[2pt]
+    \itshape 域适应
+};
+
+% Ch3
+\node[ch3] at (5.0, 4.0) {
+    \textbf{第三章}\\[3pt]
+    长程高效建模\\[2pt]
+    \itshape 状态空间
+};
+
+% Ch4
+\node[ch4] at (8.0, 4.0) {
+    \textbf{第四章}\\[3pt]
+    多模态协同\\[2pt]
+    \itshape 知识蒸馏
+};
+
+% Ch5
+\node[ch5] at (11.0, 4.0) {
+    \textbf{第五章}\\[3pt]
+    双先验融合\\[2pt]
+    \itshape 开放词汇
+};
+
+% Ch6
+\node[ch6] at (14.0, 4.0) {
+    \textbf{第六章}\\[3pt]
+    诊断评测\\[2pt]
+    \itshape 语义推理
+};
+
+% 方案之间的递进箭头
+\draw[subarrow] (3.3, 4.0) -- (4.0, 4.0);  % Ch2 → Ch3
+\draw[subarrow] (6.0, 4.0) -- (6.8, 4.0);  % Ch3 → Ch4
+\draw[subarrow] (9.0, 4.0) -- (9.8, 4.0);  % Ch4 → Ch5
+\draw[subarrow] (12.0, 4.0) -- (13.0, 4.0); % Ch5 → Ch6
+
+% 补充标注：约束与章节的对应关系
+\draw[dashed, ->, >=Stealth, thick, draw=blue!60!black] (3.5, 7.1) .. controls (3.5, 6.2) and (2.5, 5.0) .. (2.5, 4.6);
+\draw[dashed, ->, >=Stealth, thick, draw=green!50!black] (10.0, 7.1) .. controls (10.0, 6.2) and (9.5, 5.0) .. (9.5, 4.6);
+\draw[dashed, ->, >=Stealth, thick, draw=orange!60!black] (16.5, 7.1) .. controls (16.5, 6.2) and (14.5, 5.0) .. (14.5, 4.6);
+
+% ========== 第四层：研究目标 ==========
+\draw[arrowdown] (10.0, 3.0) -- (10.0, 2.2);
+
+\node[goalbox] at (10.0, 1.6) {
+    \textbf{研究目标}\\[4pt]
+    \footnotesize 构建基础模型驱动的开放视觉感知方法体系\\
+    \itshape 精度提升 · 效率优化 · 可解释性增强
+};
+
+% ========== 辅助标注：开放性维度递进 ==========
+\node[notebox] at (18.0, 8.5) {
+    \textbf{开放性维度}\\[3pt]
+    域开放 → 类别开放\\
+    → 语义开放
+};
+
+\end{tikzpicture}

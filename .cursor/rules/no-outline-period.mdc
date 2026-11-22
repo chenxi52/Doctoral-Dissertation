@@ -1,0 +1,119 @@
+---
+description: 段首提纲（紧跟 \section / \subsection / \paragraph 等之后的 \textbf{...}）末尾禁止出现 . 或 。，否则去掉只留一个空格接到正文。
+globs:
+  - body/**/*.tex
+  - back/**/*.tex
+  - front/**/*.tex
+  - thesis.tex
+alwaysApply: true
+---
+
+# 硬性规则：段首提纲不加句号
+
+适用范围：`body/`、`back/`、`front/`、`thesis.tex` 等所有正本 `.tex` 文件。
+
+## 核心规则
+
+每个节（`\section{...}`、`\subsection{...}`、`\subsubsection{...}`、`\paragraph{...}`）下的**首段**，若以 `\textbf{提纲}` 开头作为段首提纲：
+
+- ✅ `\textbf{邻居构建} 对所有目标样本的特征向量……`
+- ❌ `\textbf{邻居构建。} 对所有目标样本的特征向量……`
+
+`\textbf{}` **括号内的末尾**禁止出现 `.` 或 `。`——若存在，去掉只留一个空格接到正文。
+
+**判断口诀**：段首的 `\textbf{...}` 末尾的 `.` / `。` 一律删除，与正文之间保留**一个**空格。
+
+## 段首提纲的判定
+
+**段首提纲**指紧跟下列任一命令之后的第一个段中、第一个 `\textbf{...}`：
+
+1. `\section{...}` / `\subsection{...}` / `\subsubsection{...}` / `\paragraph{...}` / `\subparagraph{...}`
+2. `\caption{...}`（图/表标题后的首段）
+3. 文件开头（无前导行）
+4. 紧邻的空行（段落的段首）
+
+实现匹配：`(^|\n)\s*\\textbf\{([^}]+)\}`，且捕获组的**末尾字符**是 `。` / `.` 时进入处理分支。
+
+## 不适用范围（按需保留句号）
+
+1. **非段首位置**的 `\textbf{}`（行内强调、表格单元格、其它段中部）——按 `no-bold-text.mdc` 与表达需要决定是否加句号，本规则不限制。
+2. **表格 / 单元格**内 `\textbf{...}`（如 `\textbf{任务} & \textbf{N}`、`\textbf{96.8\%}`）——保留 `.` 或 `。` 不动。
+3. **数字 / 度量**行内强调（如 `\textbf{0.6054}`、`\textbf{96.8\%}`）——末尾 `.` 为小数点，不是句号，本规则**不去小数点**，只去掉**最末尾**的 `.` 或 `。`（当前字符是 `0-9` 时不进入处理分支）。
+4. **章节标题里的 `\textbf{}`**——结构化标题本身即粗体，标题内的 `.` / `。` 由作者决定。
+5. **itemize / enumerate / description 列表项内**的 `\textbf{...}`——列表项有独立标点规范（`\textbf{术语}。` 是常见"术语: 定义"格式），本规则不限制。
+   - 判定：行首非 `\item` 才算段首；若 `\item \textbf{...}` 则属列表项内。
+6. **定理 / 引理 / 命题**的标题行也属段首提纲——按本规则处理（删除末尾 `。`），保持与本节其他段首提纲格式一致。学术惯例上定理标题后的内容另起一段，行内不再需要收尾句号。
+
+## 改写示例
+
+```latex
+% ❌ 违例
+\textbf{数据来源与多风格采样。} 为保证视觉与风格多样性，...
+
+% ✅ 正确
+\textbf{数据来源与多风格采样} 为保证视觉与风格多样性，...
+```
+
+```latex
+% ❌ 违例（段首）
+\textbf{开放式题评分协议。} 开放式题（推理与描述）采用...
+
+% ✅ 正确
+\textbf{开放式题评分协议} 开放式题（推理与描述）采用...
+```
+
+## 触发告警的情况
+
+- 在段首位置看见 `\textbf{某段文字。}` → ❌ 违例，立即去掉末尾的 `。` / `.`，只保留一个空格接到正文。
+- 一次性批量扫描：每个 `.tex` 文件，对每个段首 `\textbf{...}` 应用末尾字符剥离（数字结尾的小数点不动）。
+- 用户显式要求「保留某些段首提纲的句号」时，视为一次性显式批准，并在汇报里单独标注。
+
+## 适用范围之外的提示
+
+- 公式中的 `\textbf{}` 不存在（数学环境用 `\mathbf{}`），本规则不限制。
+- 章节标题 `\section{...}`、`\caption{...}`、表头单元格本身不受本规则限制（标题内的 `.` / `。` 按内容需要决定，段首提纲是另起一段后的首句）。
+- `papers/**/*.tex` 由 `papers-readonly.mdc` 约束，本规则不涉及。
+- 与 `no-bold-text.mdc` 协同：段首提纲用 `\textbf{}` 是 `no-bold-text.mdc` 第 5 条"列点首词 / 首次出现方法名允许加粗"的延伸——段首提纲是固定术语引导词，按该豁免允许，但末尾不加句号。
+
+## 误操作恢复
+
+如果误把段首提纲末尾的 `。` / `.` 删错（如错删小数点）：
+
+1. 立即停下后续写入。
+2. 恢复 `\textbf{...。}` 原文。
+3. 汇报里说明本次修复的位置数量与误删情况。
+
+## 扫描 one-liner
+
+```bash
+# 找出所有 段首 \textbf{...} 末尾是 。 或 . 的违例
+python3 - << 'PYEOF'
+import re, glob
+files = sorted(glob.glob('body/*.tex') + glob.glob('back/*.tex'))
+total = 0
+for f in files:
+    with open(f, 'r', encoding='utf-8') as fh:
+        lines = fh.readlines()
+    for ln, line in enumerate(lines, 1):
+        m = re.match(r'^\s*\\textbf\{((?:[^{}]|\{[^}]*\})+)\}', line)
+        if not m: continue
+        inner = m.group(1).strip()
+        if not inner: continue
+        if ln >= 2:
+            prev = lines[ln-2].strip()
+            is_start = (prev == '') or bool(re.match(r'\\(section|subsection|subsubsection|paragraph|caption)\b', prev))
+        else:
+            is_start = True
+        if not is_start: continue
+        last = inner[-1]
+        if last in ('。', '.') and not (len(inner) >= 2 and inner[-2].isdigit()):
+            print(f'{f}:{ln} \\textbf{{{inner}}}')
+            total += 1
+print(f'\n总计: {total} 处违例')
+PYEOF
+```
+
+阈值参考：
+
+- 总违例数 = 0：合规
+- 总违例数 > 0：必须修复

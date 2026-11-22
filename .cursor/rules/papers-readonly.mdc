@@ -1,0 +1,38 @@
+---
+description: papers/ 目录下的所有文件均为只读参考资料，禁止任何形式的修改。
+globs:
+  - papers/**
+alwaysApply: true
+---
+
+# 硬性规则：papers/ 目录只读
+
+`papers/` 目录及其所有子目录（`papers/DAMF/`、`papers/UPA/`、`papers/**`）下的文件**仅作为参考材料存在**，本仓库的正本在 `body/`、`back/`、`reference.bib` 等顶层文件。任何 agent、subagent、或者你自己：
+
+## 绝对禁止
+
+- **写入**：不得用 `Write` / `StrReplace` / `EditNotebook` 创建或修改 `papers/**` 下任何文件。
+- **删除/重命名**：不得用 `Delete` / shell `rm` / `mv` 操作 `papers/**` 下任何文件。
+- **就地编辑生成**：不得把 `papers/**/*.tex` 复制后落到 `papers/` 内做"小改"（应该输出到 `body/` 或临时位置）。
+- **side-effect 命令**：不得在 `papers/` 内运行 `latexmk`、`xelatex`、`pdflatex`、`make`、`git commit -am` 等任何可能改写该目录的命令。
+
+## 允许
+
+- `Read` / `Grep` / `Glob` 读取。
+- 在 `body/`、`back/`、根目录写文件、跑编译。
+- 引用 `papers/**/*.pdf` 作为 `\includegraphics{}` 的图源（这是论文需要）。
+- 引用 `papers/**/*.tex` 的公式、表格结构作为模板，但**重写到 `body/` 下**，不在 `papers/` 内修改。
+
+## 触发告警的情况
+
+如果用户/任务需要"修改 `papers/DAMF/main_re.tex` 之类的 LaTeX 源"，**先停下来**反问确认：
+> "papers/ 是只读参考资料区，请确认你是要在 `body/` 下新建一个独立文件，还是真的要改 `papers/` 里的参考稿？"
+
+确认要在 `papers/` 里改时，把改动当作**一次性、用户显式批准**的操作，并在最终汇报里单独标注"已修改只读参考区 `papers/...`"。
+
+## 误操作恢复
+
+如果发现自己不小心在 `papers/` 下写了东西，立即：
+1. 停止后续动作。
+2. 用 `git checkout -- papers/` 还原（如果已 commit）或 `rm` 临时文件后从原始位置重新拷贝。
+3. 在汇报里说明并道歉。

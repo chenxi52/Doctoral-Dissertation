@@ -1,0 +1,62 @@
+.DS_Store
+*~
+*.bak
+
+# LaTeX build products
+*.acn
+*.acr
+*.alg
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.brf
+*.dvi
+*.fdb_latexmk
+*.fls
+*.glg
+*.glo
+*.gls
+*.hd
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.loe
+*.out
+*.run.xml
+*.synctex.gz
+*.thm
+*.toc
+*.toe
+*.vrb
+*.xdv
+/thesis.ist
+
+# Main build output; keep source/reference PDFs such as papers/*.pdf.
+/thesis.pdf
+
+# Generated folders
+/auto/
+/dist/
+/.tools/
+/node_modules/
+
+# Large binary artifacts: never commit (a single PPTX here is ~84 MB)
+/*.pptx
+/assets/
+/outputs/
+/.ppt_output/
+/.ppt_build/
+/.codex-finalizer/
+
+# Read-only reference papers (112 MB) — keep out of the repo, read-only per
+# .cursor/rules/papers-readonly.mdc
+/papers/
+
+# Local Office lock files
+~$*
+
+papers

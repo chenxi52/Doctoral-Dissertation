@@ -1,0 +1,114 @@
+% !Mode:: "TeX:UTF-8"
+% 全文符号说明表：位置在中文摘要之后、目录之前。
+% 表格编号在本环境内重置为“表 1 / 表 2 …”。
+
+\makeatletter
+\renewcommand{\hit@denotation@ctitle}{符号说明表}
+\renewcommand{\hit@denotation@etitle}{List of Symbols and Notations}
+\makeatother
+\begin{denotation}
+\vspace{-1.5em}
+\begin{longtable}{@{}p{0.30\textwidth}p{0.56\textwidth}p{0.09\textwidth}@{}}
+\caption{全文符号说明表}\label{tab:vocab_symbols}\\
+\toprule
+\textbf{符号} & \textbf{含义} & \textbf{章节} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{@{}l}{\small\itshape 符号说明表（续）}\\
+\toprule
+\textbf{符号} & \textbf{含义} & \textbf{章节} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{@{}r@{}}{\small\itshape 接下页}\\
+\endfoot
+\bottomrule
+\endlastfoot
+
+\multicolumn{3}{@{}l}{\itshape 数据、空间与分布}\\
+$\mathcal{X}$ / $\mathcal{Y}$ / $\mathcal{C}$ & 样本空间 / 标签空间 / 类别集合 & 全局 \\
+$C$ & 类别数，$|\mathcal{Y}| = C$ & 全局 \\
+$x$ / $y$ & 样本 / 标签 & 全局 \\
+$n_s$ / $n_t$ & 源域 / 目标域样本数 & 全局 \\
+$\mathcal{S}$ / $\mathcal{T}$ & 源域数据集（带标签）/ 目标域数据集（无标签） & 2--3 \\
+$\mathcal{T}_c$ & 干净伪标签样本集 & 2 \\
+$\mathcal{T}_q$ & 主动标注的目标样本子集 & 3 \\
+$\mathcal{T}_{\text{CO}}$ / $\mathcal{T}_{\text{MH}}$ & Core-Set 点集 / MH 点集 & 3 \\
+$\mathcal{D}_l$ & 已标注数据集，$\mathcal{D}_l = \mathcal{S} \cup \mathcal{T}_q$ & 3 \\
+$P$ / $Q$ & 目标域分布 / 源域分布 & 全局 \\
+$\hat{P}$ / $\hat{Q}$ / $\widetilde{Q}$ & $\mathcal{T}$ / $\mathcal{S}$ / $\mathcal{T}_q$ 的经验分布 & 3 \\
+$\mathbf{S}_t$ & 目标域特征相似度矩阵 & 2 \\
+$\mathcal{Z}$ & 视觉—语言模型的特征空间 & 3 \\
+$d_{\mathcal{U}}$ / $d_X$ / $d_Z$ / $d_Y$ & 距离函数 $d_{\mathcal{U}}:\mathcal{U}\times\mathcal{U}\to\mathbb{R}_{+}$，分别定义于 $\mathcal{U}=\mathcal{X},\mathcal{Z},\mathcal{Y}$ 上 & 3 \\
+$d(\cdot,\cdot)$ & 余弦相似度 & 2 \\
+
+\multicolumn{3}{@{}l}{\itshape 模型与多模态表示}\\
+$\theta_s$ / $\theta_t$ & 源域模型 / 目标域模型 & 2--3 \\
+$\theta_v$ & 视觉—语言模型 & 3 \\
+$g$ / $f$ & 特征提取器 / 分类器 & 2 \\
+$\phi$ & 视觉—语言模型的图像编码器 & 3 \\
+$\mathbf{I}$ & 视觉—语言模型的图像特征，$\mathbf{I} = \phi(x)$ & 3 \\
+$V_k$ / $c_k$ & 类别 $k$ 的可学习 prompt 模板 / 类别名称 & 3 \\
+$\mathrm{Enc}_t(\cdot)$ / $\mathbf{w}_k$ & 文本编码器 / 文本嵌入 & 3 \\
+$\tau$ & 温度参数（全文统一） & 全局 \\
+$z_i$ & 归一化特征，$z_i = g(x_i)/\|g(x_i)\|$ & 2 \\
+$U$ / $\widetilde{U}$ & 原始 patch 序列 / 打乱后的扰动序列 & 2 \\
+$N_p$ & patch token 数 & 2 \\
+$L_{\text{vss}}$ & 通道级视觉状态空间模块的块数 & 2 \\
+$P_k$ / $\Pi$ & 背景 patch 集合 / 随机置换矩阵 & 2 \\
+
+\multicolumn{3}{@{}l}{\itshape 假设空间与理论}\\
+$\mathcal{H}$ / $\mathcal{G}$ & 源模型 / 视觉—语言模型的假设空间 & 3 \\
+$h$ / $g_V$ & 上述假设空间中的假设 & 3 \\
+$\mathcal{H}_\epsilon$ & 满足目标风险上界的假设子集 & 3 \\
+$L$ / $M$ & 标量损失函数 / 损失上界 & 3 \\
+$\mathcal{L}_{\mathcal{D}}(h,h')$ & 经验风险 & 3 \\
+$\eta_{\mathcal{H}}$ / $\eta'_{\mathcal{H}}$ / $\eta_{\mathcal{G}}$ & 源模型 / 目标域受限 / 协同设定下的理想最大误差 & 3 \\
+$\mathfrak{R}_{n_t}$ & Rademacher 复杂度 & 3 \\
+$\mu$ / $k$ / $k_V$ & 损失的 Lipschitz 常数 / 源假设 / 视觉—语言假设的 Lipschitz 常数 & 3 \\
+$\epsilon$ / $\delta$ & 误差容忍度 / 置信水平参数 & 全局 \\
+$\eta$ & 学习率 & 全局 \\
+
+% \multicolumn{3}{@{}l}{\itshape 损失项与超参数}\\
+% $\mathcal{L}$ & 可训练的总损失 & 2 \\
+% $\mathcal{L}_{\text{ent}}$ / $\mathcal{L}_{\text{div}}$ / $\mathcal{L}_{\text{IM}}$ & 熵最小化项 / 多样性正则项 / 信息最大化项 & 2 \\
+% $\mathcal{L}_{\text{CL}}$ / $\mathcal{L}_{\text{CE}}$ & 类感知对比学习损失 / 交叉熵损失 & 2 \\
+% $\mathcal{L}_{\text{KL}}$ / $\mathcal{L}_{\text{kg}}$ & KL 一致性正则 / 知识保持正则 & 2--3 \\
+% $\mathcal{L}_{C}$ & 交叉熵与知识保持项之和 & 3 \\
+% $\mathcal{L}_{T}$ / $\mathcal{L}_{V}$ & 交替蒸馏中目标模型 / 视觉—语言模型的蒸馏损失 & 3 \\
+% $\mathcal{L}_{T\leftarrow V}^{dist}$ / $\mathcal{L}_{V\leftarrow T}^{dist}$ & 目标模型 / 视觉—语言模型的蒸馏项 & 3 \\
+% $K$ & 近邻数 & 2 \\
+% $B_{\text{batch}}$ & 迷你批大小 & 2 \\
+% $\beta_{\text{CE}}$ & 交叉熵损失的权重 & 2 \\
+% $\gamma_{\text{sel}}$ / $\gamma_{\text{bg}}$ & 置信样本筛选比例 / 背景 patch 打乱比例 & 2 \\
+% $B$ / $\rho$ / $\pi$ & 标注预算 / 采样比例 / 主动采样策略 & 3 \\
+% $N$ / $\alpha$ / $\beta_q$ / $\beta$ / $\lambda$ & 每类保留的高置信样本数 / Core-Set 权重 / 标注样本权重 / 蒸馏样本权重 / 知识保持强度 & 3 \\
+% $\mathcal{X}_{\text{top}}$ & 目标模型每类内高置信样本集合 & 3 \\
+% $m_{A\leftarrow B}$ / $\Pi_{A\leftarrow B}$ & 蒸馏样本掩码 / 蒸馏权重 & 3 \\
+
+\multicolumn{3}{@{}l}{\itshape 开放词汇分割（第 4 章）}\\
+$F_{\text{clip},l}$ / $F_{\text{clip},e}$ & CLIP 图像编码器的多尺度特征 / 掩码特征 & 4 \\
+$F_{\text{sam}}$ & SAM 图像编码器的细粒度空间特征 & 4 \\
+$L_{\text{dec}}$ / $N_q$ & Transformer 解码器层数 / 可学习查询数 & 4 \\
+$X^l$ / $x^l$ & 第 $l$ 层可学习查询 / 注入的空间查询 & 4 \\
+$\mathcal{M}^l$ / $\mathcal{M}$ / $m_i$ & 第 $l$ 层掩码预测 / 最终掩码族 / 第 $i$ 个掩码 & 4 \\
+$\mathcal{M}_{\text{sam}}$ & SAM 的类别无关零样本掩码 & 4 \\
+$E_m$ / $E_p$ / $E_{aux}$ / $E_c$ & 掩码预测投影 / 空间查询投影 / 掩码辅助投影 / 类别嵌入投影 & 4 \\
+$T_{\text{clip}}$ & CLIP 文本特征 & 4 \\
+$P_d$ / $P_{\text{cl}}$ / $P_{\text{sam}}$ & 检测器类别预测 / CLIP 类别预测 / SAM 掩码的类别得分 & 4 \\
+$\alpha_{\text{ens}}$ / $\beta_{\text{ens}}$ & 类别集成的平衡系数（已见类别 / 未见类别） & 4 \\
+$\epsilon_{\text{fuse}}$ / $\xi$ & 掩码集成的融合权重 / 低质量掩码过滤阈值 & 4 \\
+
+\multicolumn{3}{@{}l}{\itshape 情感评测（第 5 章）}\\
+$\mathcal{O}_{\text{per}}$ / $\mathcal{O}_{\text{emo}}$ & 感知维度标注对象 / 情感归因标注对象 & 5 \\
+$\mathcal{O}_{\text{rea}}$ / $\mathcal{O}_{\text{des}}$ & 证据锚定推理标注对象 / 情感描述标注对象 & 5 \\
+$K_{\text{emo}}$ & 情感类别数 & 5 \\
+$H_{\text{KW}}$ / $\epsilon^2$ / $V$ & Kruskal--Wallis 检验统计量 / 效应量 / Cramer's V 列联系数 & 5 \\
+$S_{\text{Top3}}$ / $\alpha_{\text{top3}}$ & 情感 Top-3 排序得分 / 其加权系数 & 5 \\
+$S_{\text{VAD}}$ / $p_{\text{pen}}$ & VAD 维度得分 / 跨越中性点的惩罚系数 & 5 \\
+$\hat{v}$ / $v$ / $r_k$ & VAD 维度预测值 / 参考值 / Top-3 位置的参考相关度 & 5 \\
+$\alpha$ | $\kappa_w$ | $n$ & Krippendorff 一致性系数 | 二次加权 Cohen 系数 | 样本量 & 5 \\
+
+\end{longtable}
+\vspace{0.5em}
+\end{denotation}
