@@ -56,6 +56,9 @@
 # .cursor/rules/papers-readonly.mdc
 /papers/
 
+# Scratch working dir (backup copies, one-off scan/build scripts)
+/tmp/
+
 # Local Office lock files
 ~$*
 
