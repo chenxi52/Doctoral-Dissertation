@@ -328,7 +328,7 @@ $\theta_v\leftarrow\theta_t$蒸馏： 目标模型的分类输出更具判别性
 开放集设置参考已有工作~\cite{liu2021separate}的设定：Office数据集按字母序前10个类别为已知、后11个为未知；Office-Home前25个类别为已知、后40个为未知；VisDA-C前6个类别为已知、后6个为未知。
 闭集场景下报告所有目标样本的平均分类准确率；开放集场景下报告HOS（Harmonic Open-set Score）分数，定义为已知类别准确率$\mathrm{acc}_{kn}$与未知类别准确率$\mathrm{acc}_{ukn}$的调和平均值：$\mathrm{HOS}=2\cdot\mathrm{acc}_{kn}\cdot\mathrm{acc}_{ukn}/(\mathrm{acc}_{kn}+\mathrm{acc}_{ukn})$。
 
-源域预训练采用与SHOT~\cite{liang2021source}相同的流程：在Office/Office-Home/miniDomainNet上使用ResNet-50~\cite{he2016deep}，在VisDA-C上使用ResNet-101。ViL模型默认采用CLIP ViT-B/32图像编码器。DFSelector中$\alpha=0.4$，$\mathcal{X}_{\text{top}}$大小$N=16$，$\beta_q=3$，$\beta=0.3$，闭集设定$\lambda=1$，开放集设定$\lambda=8$。APT阶段使用SGD优化器，基础学习率$2\times 10^{-3}$，热启动的首个epoch学习率$1\times 10^{-5}$ 后接$E_APT=50$个epoch的余弦退火。ADL阶段目标模型学习率$1\times 10^{-2}$，ViL prompt学习率$2\times 10^{-3}$，共训练$E_ADL=20$个epoch。所有实验在单张NVIDIA RTX 4090 GPU上运行，默认标注预算$\rho=5\%$。
+源域预训练采用与SHOT~\cite{liang2021source}相同的流程：在Office/Office-Home/miniDomainNet上使用ResNet-50~\cite{he2016deep}，在VisDA-C上使用ResNet-101。ViL模型默认采用CLIP ViT-B/32图像编码器。DFSelector中$\alpha=0.4$，$\mathcal{X}_{\text{top}}$大小$N=16$，$\beta_q=3$，$\beta=0.3$，闭集设定$\lambda=1$，开放集设定$\lambda=8$。APT阶段使用SGD优化器，基础学习率$2\times 10^{-3}$，热启动的首个epoch学习率$1\times 10^{-5}$ 后接$E_{APT}=50$个epoch的余弦退火。ADL阶段目标模型学习率$1\times 10^{-2}$，ViL prompt学习率$2\times 10^{-3}$，共训练$E_{ADL}=20$个epoch。所有实验在单张NVIDIA RTX 4090 GPU上运行，默认标注预算$\rho=5\%$。
 
 
 本节在闭集与开放集两种域适应设定下与现有方法进行系统对比。
