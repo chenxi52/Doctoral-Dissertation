@@ -35,13 +35,13 @@
 % ===== 编译开关（调试时取消注释；定稿前请恢复注释）=====
 % \includeonly{body/chap2, body/chap3,back/conclusion}
 % \includeonly{back/conclusion}
-% \includeonly{body/chap5}
+% \includeonly{body/chap1}
 % 多章：  % \includeonly{body/chap2,body/chap3}
 
 % ===== 调试开关：注释掉下面这行使图片正常编译，取消注释则图片区域变为空白但保持占位高度 ======
-\usepackage{letltxmacro}
-\LetLtxMacro\originalincludegraphics\includegraphics
-\renewcommand{\includegraphics}[2][]{\typeout{DBG: skipping \detokenize{#2}}\phantom{\originalincludegraphics[#1]{#2}}}
+% \usepackage{letltxmacro}
+% \LetLtxMacro\originalincludegraphics\includegraphics
+% \renewcommand{\includegraphics}[2][]{\typeout{DBG: skipping \detokenize{#2}}\phantom{\originalincludegraphics[#1]{#2}}}
 
 \begin{document}
 
