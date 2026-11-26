@@ -217,17 +217,16 @@ h(t) = \overline{A} h(t-1) + \overline{B} x(t), \quad y(t) = C h(t) + D x(t).
 
 \label{sec:chap2_sfmamba_chvss}
 
-视觉 VMamba 通过四向 2D 选择性扫描捕获 patch 间的空间长程依赖，但其在通道维度上的建模存在结构性短板：SSM 状态转移沿空间 token 顺序递归展开，每个时刻的状态更新仅与单一 patch 关联，跨通道频率域相关性需要等到所有空间 patch 完成扫描后通过后续通道投影间接获得，难以显式强化语义稳定的低频通道、抑制域敏感的高频通道。这一限制在源—目标域发生显著分布偏移时尤为突出：低频通道承载的跨域一致纹理与轮廓信息与高频通道承载的域特异细节在适应阶段出现响应失衡，而现有 SSM 骨干下的通道建模工作多在复杂的层级框架内引入通道注意力以提升特定任务（图像重建、源数据可访问的目标检测）的性能，鲜有针对 SFDA 设定下“骨干固定 + 无源数据参与”约束设计的轻量级通道选择性机制。
-
-% \textbf{与现有通道注意力工作的对比} 主流方案与 SfMamba 的核心差异在于对源数据与骨干修改的依赖度不同（如图~\ref{fig:sfmamba_chvss_compare}）：一些方法在多层重建框架内集成通道注意力以服务于图像重建任务，未针对分类任务的判别层迁移去噪进行适配；另一些方法通过域间通道混合实现跨域对齐，但强制要求源域与目标域数据在适应阶段同时可用，违背 SFDA 的“无源”约束。SfMamba 的 Ch-VSS 模块则采取显式的通道维度双向扫描策略，将通道相关性建模为可学习的基础特征重组策略，既不修改源骨干参数也不要求源数据参与，与 SFDA 设定完全契合。
+视觉 VMamba 通过四向 2D 选择性扫描捕获 patch 间的空间长程依赖，但其在通道维度上的建模存在结构性短板：SSM 状态转移沿空间 token 顺序递归展开，每个时刻的状态更新仅与单一 patch 关联，跨通道频率域相关性需要等到所有空间 patch 完成扫描后通过后续通道投影间接获得，难以显式强化语义稳定的低频通道、抑制域敏感的高频通道。这一限制在源—目标域发生显著分布偏移时尤为突出：低频通道承载的跨域一致纹理与轮廓信息与高频通道承载的域特异细节在适应阶段出现响应失衡。
+如图~\ref{fig:sfmamba_chvss_compare}，EMAN~\cite{EMAN}在多层重建框架内集成压缩后的通道注意力；DA-Mamba~\cite{DA-Mamba}通过域间通道混合实现跨域对齐。本章Ch-VSS 模块则采取非压缩的显式通道维度双向扫描策略，将通道相关性建模为可学习的跨域特征重组策略。
 
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.6\linewidth]{figures/sfmamba/mamba_channel_atten.png}
-    \bicaption[fig:sfmamba_chvss_compare]{}{Mamba 骨干上通道维度注意力机制对比示意}{Fig.}{Comparison of channel-wise attention mechanisms integrated on the Mamba backbone}
+    \bicaption[fig:sfmamba_chvss_compare]{}{本章Ch-VSS与其他Mamba工作的通道维度学习机制对比示意}{Fig.}{Comparison of channel-wise attention mechanisms integrated on the Mamba backbone}
 \end{figure}
 
-给定骨干网络特征图 $X_{\text{in}} = g(x^t) \in \mathbb{R}^{D \times H \times W}$，Ch-VSS 首先将其重塑为通道向量序列 $X'_{\text{in}} \in \mathbb{R}^{D \times (HW)}$，然后沿通道维度应用双向 SSM，以缓解单向扫描带来的通道顺序偏置：
+具体的，给定骨干网络特征图 $X_{\text{in}} = g(x^t) \in \mathbb{R}^{D \times H \times W}$，Ch-VSS 首先将其重塑为通道向量序列 $X'_{\text{in}} \in \mathbb{R}^{D \times (HW)}$，然后沿通道维度应用双向 SSM，以缓解单向扫描带来的通道顺序偏置：
 \begin{align}
     X'_{\rightarrow} &= \text{SSM}(X'_{\text{in}}), \quad
     X'_{\leftarrow} = \text{SSM}\!\big(\textit{Reverse}(X'_{\text{in}})\!\big), \notag \\
@@ -662,7 +661,7 @@ UPA 对四个核心超参数——置信样本筛选比例 $\gamma_{\text{sel}}$
 从源域到目标域的端到端增益同样显著：Baseline$_{\text{S}}$ 在 Office-Home 与 VisDA-C 上分别仅取得 +3.4\% 与 +13.6\% 的迁移增益，而完整 SfMamba 在两基准上分别获得 +6.4\% 与 +23.7\% 的迁移增益（均相对 Source-S 基线），验证了 Ch-VSS 与 SCS 在 SFDA 场景下的协同优势。
 
 Grad-CAM 可视化（图~\ref{fig:sfmamba_gradcam}）进一步揭示了 Ch-VSS 与 SCS 的协同作用。在 VisDA-C S$\rightarrow$R 任务上，基线源模型仅能捕捉粗略目标区域；引入 Ch-VSS 后，模型即使在适应前也能更准确识别任务相关区域；完整适应后，SfMamba 的热力图显著聚焦于前景目标。然而当移除 SCS（$w/$ Ch-VSS）时，模型在部分样本上仍表现出不稳定的注意力分布——这表明 Mamba 的序列扫描过程在域迁移下会传播噪声上下文信号，而 SCS 通过打破虚假空间相关性稳定了隐藏状态的演化。
-图~\ref{fig:sfmamba_cases}的进一步在成功/失败案例上的对比显示，引入 Ch-VSS 一般会带来更聚焦前景目标的注意力图。成功案例中这种定位改进直接贡献于正确预测；失败案例中，模型虽正确关注目标区域，但当视觉相似类别在域迁移下产生重叠特征表征时仍可能误分类。此外，由于 Ch-VSS 通过通道级状态空间建模重塑特征空间，部分样本在适应后可能更接近竞争类别——尤其当细粒度判别性线索被削弱时。整体而言，剩余错误主要源于细粒度语义模糊而非空间注意力错误。
+% 图~\ref{fig:sfmamba_cases}的进一步在成功/失败案例上的对比显示，引入 Ch-VSS 一般会带来更聚焦前景目标的注意力图。成功案例中这种定位改进直接贡献于正确预测；失败案例中，模型虽正确关注目标区域，但当视觉相似类别在域迁移下产生重叠特征表征时仍可能误分类。此外，由于 Ch-VSS 通过通道级状态空间建模重塑特征空间，部分样本在适应后可能更接近竞争类别——尤其当细粒度判别性线索被削弱时。整体而言，剩余错误主要源于细粒度语义模糊而非空间注意力错误。
 
 \begin{figure}[!htbp]
     \centering
@@ -670,11 +669,11 @@ Grad-CAM 可视化（图~\ref{fig:sfmamba_gradcam}）进一步揭示了 Ch-VSS �
     \bicaption[fig:sfmamba_gradcam]{}{SCS 模块在 Real 域上的 GradCAM 可视化对比}{Fig.}{GradCAM visualization comparison of the SCS module on the target Real domain of VisDA-C}
 \end{figure}
 
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=0.8\linewidth]{figures/sfmamba/fail_suc.png}
-    \bicaption[fig:sfmamba_cases]{}{SfMamba 在 VisDA-C 上的典型成功与失败案例}{Fig.}{Representative successful and failure classification cases with SfMamba on VisDA-C}
-\end{figure}
+% \begin{figure}[!htbp]
+%     \centering
+%     \includegraphics[width=0.8\linewidth]{figures/sfmamba/fail_suc.png}
+%     \bicaption[fig:sfmamba_cases]{}{SfMamba 在 VisDA-C 上的典型成功与失败案例}{Fig.}{Representative successful and failure classification cases with SfMamba on VisDA-C}
+% \end{figure}
 
 
 为评估 Ch-VSS 中双向通道扫描设计的有效性，我们对比了 Self-Attention（SA）、Channel Mamba（CM）、Efficient Channel Attention（ECA）与 Convolutional Block Attention Module（CBAM）等代表性通道注意力机制，如表~\ref{tab:abl_attn}所示。实验显示，替代通道机制在 Office-Home 上的平均目标域精度增益至多 0.5\%，而 Ch-VSS 取得显著的 +2.5\% 增益且在所有 12 个迁移任务上均带来提升。
@@ -802,17 +801,17 @@ SCS 策略通过 GradCAM 激活值精准识别背景 patch 并施加随机置换
   \centering
   \setlength{\tabcolsep}{0pt}
   \subfigure[A$\xrightarrow{}$C]{%
-    \includegraphics[width=0.48\linewidth]{figures/sfmamba/abl_ch_VSSM_layer_3.png}
+    \includegraphics[width=0.4\linewidth]{figures/sfmamba/abl_ch_VSSM_layer_3.png}
     \label{fig:sfmamba_l_ablation_left}%
   }\hfill
   \subfigure[]{%
-    \includegraphics[width=0.48\linewidth]{figures/sfmamba/con_ratio.png}
+    \includegraphics[width=0.4\linewidth]{figures/sfmamba/con_ratio.png}
     \label{fig:sfmamba_l_ablation_right}%
   }
   \bicaption[fig:sfmamba_l_ablation]{}{Ch-VSS 模块数 $L_{\text{vss}}$ 与背景打乱比例 $\gamma_{\text{bg}}$ 的消融}{Fig.}{Ablation on the number of Ch-VSS blocks $L_{\text{vss}}$ and the background shuffle ratio $\gamma_{\text{bg}}$}
 \end{figure}
 
-本节考察两个关键超参数：Ch-VSS 块数 $L_{\text{vss}}$ 与 SCS 的背景 patch 比例 $\gamma_{\text{bg}}$。我们记 Ch-VSS 块配置为 Ch-VSS-L$n$，其中 $n$ 表示块数。图~\ref{fig:sfmamba_l_ablation_left} 报告了源域与适应后目标模型在 Office-Home A$\rightarrow$C 任务上的精度。结果显示，引入 Ch-VSS 块始终能提升目标域精度，且 Ch-VSS-L2 配置在目标域上取得最优性能。图~\ref{fig:sfmamba_l_ablation_right} 进一步展示了背景比例 $\gamma_{\text{bg}}$ 对目标精度的影响：当 $\gamma_{\text{bg}}=20$ 时取得最高精度，性能在小 $\gamma_{\text{bg}}$ 值下保持稳定，但 $\gamma_{\text{bg}}$ 过大时显著下降——这与过度打乱会破坏结构化图像内容的预期一致。
+本节考察两个关键超参数：Ch-VSS 块数 $L_{\text{vss}}$ 与 SCS 的背景 patch 比例 $\gamma_{\text{bg}}$。我们记 Ch-VSS 块配置为 Ch-VSS-L$n$，其中 $n$ 表示块数。图~\ref{fig:sfmamba_l_ablation_left} 报告了源域与适应后目标模型在 Office-Home A$\rightarrow$C 任务上的精度。结果显示，引入 Ch-VSS 块始终能提升目标域精度，且 Ch-VSS-L2 配置在目标域上取得最优性能。图~\ref{fig:sfmamba_l_ablation_right} 进一步展示了背景比例 $\gamma_{\text{bg}}$ 对目标精度的影响：当 $\gamma_{\text{bg}}=20$ 时取得最高精度，性能在小 $\gamma_{\text{bg}}$ 值下保持稳定，但 $\gamma_{\text{bg}}$ 过大时显著下降，这与过度打乱会破坏结构化图像内容的预期一致。
 
 % \noindent\textbf{（6） 计算效率}
 

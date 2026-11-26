@@ -24,7 +24,7 @@
     \subfigure[]{
     \includegraphics[width=0.38\textwidth]{figures/cmpf/moti_b.png}
     }
-    \bicaption[fig:cmpf_motivation]{}{现有开放词汇SOTA方法对已见与未见类别的分割性能对比（左），及本章方法与其他两种方法的AR与mIoU对比（右）}{Fig.}{Comparison of SOTA open-vocabulary segmentation methods on seen vs unseen classes (left) and AR/mIoU on unseen classes (right) of CMPF vs MaskCLIP and FC-CLIP on PC-459}
+    \bicaption[fig:cmpf_motivation]{}{现有方法分割表现（左）及本章方法的对比（右）}{Fig.}{Comparison of SOTA open-vocabulary segmentation methods on seen vs unseen classes (left) and AR/mIoU on unseen classes (right) of CMPF vs MaskCLIP and FC-CLIP on PC-459}
 \end{figure}
 
 为突破上述瓶颈，本章提出基于跨模型先验融合的开放词汇分割方法 CMPF。该方法的核心思想是：协同整合SAM的像素级空间定位能力与CLIP的开放词汇语义理解能力，通过查询注入器与特征注入器两个模块在Transformer解码器内部实现两类先验知识的深度融合，并借助开放集合集成模块在推理阶段融合SAM的零样本掩码预测，进一步提升未见类别的分割质量。

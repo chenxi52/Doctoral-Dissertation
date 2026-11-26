@@ -12,7 +12,7 @@
 
 \begin{figure}[!htbp]
  \centering
- \includegraphics[width=.8\linewidth]{figures/multi_generalization_shift.pdf}
+ \includegraphics[width=.8\linewidth]{figures/train_test.png}
  \bicaption[fig:iidood]{}{训练与目标条件在数据分布、类别词表和语义要求上的差异}{Fig.}{Differences between training and target conditions in data distribution, category vocabulary, and semantic requirements}
 \end{figure}
 
@@ -200,7 +200,13 @@ OVS 方法可沿“先生成掩码再分类”的两阶段路径与“端到端 
 
 \subsection{本文的研究内容}
 
-前文表明，训练与目标条件之间的差异既可能改变样本分布和类别范围，也可能提高目标任务对语义解释的要求。针对数据分布与类别词表变化，本文研究如何利用有限的目标侧信息和预训练先验改善模型的迁移表现；针对语义理解要求的提高，本文研究如何在不更新模型的条件下评估既有能力的适用范围。两类工作分别从能力提升和能力评测回应多泛化场景下的模型迁移问题，具体归纳为以下四个研究问题。
+视觉感知模型进入真实应用后，训练与目标条件的差异会以不同形式出现，举例如图~\ref{fig:generalization_scenes}所示。在道路场景中，天气与成像条件变化可能改变车辆的外观分布，使原有判别依据不再稳定；在室内场景中，新出现的花瓶超出预设类别词表，模型需要识别并定位训练时未见的对象；当任务由辨认对象、场景和动作转向解释艺术作品传达的情感时，模型还须说明判断所依据的视觉线索。这些情境分别对应数据分布、类别词表与任务语义要求的变化。针对前两类变化，本文研究如何利用有限的目标侧信息与预训练先验改善迁移表现；针对语义理解要求的提高，本文在不更新模型的条件下评估既有能力的适用范围。由此，本文从能力提升与能力评测两个方面展开研究，归纳为以下四个研究问题。
+
+\begin{figure}[!htbp]
+ \centering
+ \includegraphics[width=.8\textwidth]{figures/scene.png}
+ \bicaption[fig:generalization_scenes]{}{数据分布、类别词表与任务语义要求变化的应用场景示例}{Fig.}{Examples of changes in data distribution, category vocabulary, and task-level semantic demands}
+\end{figure}
 
 
 \noindent\textbf{（1）无监督模型迁移的不确定性抑制问题}
